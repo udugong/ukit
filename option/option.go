@@ -4,16 +4,12 @@ type Option[T any] interface {
 	Apply(*T)
 }
 
-type funcOption[T any] struct {
-	f func(*T)
+type funcOption[T any] func(*T)
+
+func (f funcOption[T]) Apply(t *T) {
+	f(t)
 }
 
-func (fdo *funcOption[T]) Apply(do *T) {
-	fdo.f(do)
-}
-
-func NewFuncOption[T any](f func(*T)) *funcOption[T] {
-	return &funcOption[T]{
-		f: f,
-	}
+func NewFuncOption[T any](f func(*T)) funcOption[T] {
+	return f
 }

@@ -1,20 +1,18 @@
 package queue
 
-import "errors"
-
 // CircularQueue 循环队列.
 type CircularQueue[T any] struct {
-	capacity uint // 容量
-	head     uint // 指向队头的索引
-	tail     uint // 指向队尾的索引
-	data     []T  // 队列中的元素
+	capacity int // 容量
+	head     int // 指向队头的索引
+	tail     int // 指向队尾的索引
+	data     []T // 队列中的元素
 }
 
 // NewCircularQueue 创建一个循环队列.
 // capacity 必须大于0 否则会 panic.
 // 因为 tail 指向的位置实际上是没有数据的
 // 所以 data 的实际容量为 capacity+1.
-func NewCircularQueue[T any](capacity uint) *CircularQueue[T] {
+func NewCircularQueue[T any](capacity int) *CircularQueue[T] {
 	if capacity < 1 {
 		panic("ukit: 队列容量必须为正数")
 	}
@@ -24,8 +22,6 @@ func NewCircularQueue[T any](capacity uint) *CircularQueue[T] {
 		data:     make([]T, realCap),
 	}
 }
-
-var ErrFullQueue = errors.New("ukit: 队列已满")
 
 // Enqueue 入队.
 // 如果队列已满则返回 ErrFullQueue 错误.
@@ -37,8 +33,6 @@ func (c *CircularQueue[T]) Enqueue(val T) error {
 	c.tail = (c.tail + 1) % c.capacity
 	return nil
 }
-
-var ErrEmptyQueue = errors.New("ukit: 队列为空")
 
 // Dequeue 出队.
 // 如果队列为空则返回 ErrEmptyQueue 错误.

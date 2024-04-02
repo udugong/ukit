@@ -325,7 +325,7 @@ func TestCircularQueueLifecycle(t *testing.T) {
 func TestNewCircularQueue(t *testing.T) {
 	type testCase[T any] struct {
 		name      string
-		capacity  uint
+		capacity  int
 		want      *CircularQueue[T]
 		wantPanic bool
 	}

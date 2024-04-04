@@ -3,8 +3,8 @@ module github.com/udugong/ukit
 go 1.20
 
 require (
-	github.com/stretchr/testify v1.8.4
-	golang.org/x/exp v0.0.0-20240222234643-814bf88cf225
+	github.com/stretchr/testify v1.9.0
+	golang.org/x/exp v0.0.0-20240325151524-a685a6edb6d8
 )
 
 require (

@@ -36,6 +36,12 @@ func TestCustomBaseN_NumToBaseNString(t *testing.T) {
 			want:  "1c4",
 		},
 		{
+			name:  "normal_base62_max",
+			baseN: 62,
+			num:   9223372036854775807,
+			want:  "aZl8N0y58M7",
+		},
+		{
 			name:  "normal_base62_another_chars_4592",
 			baseN: 62,
 			chars: "0d13r5qtTD2W9abcOevQfRghPjl6k7mnpUVuSwZxzABCiEF8GHIJs4KLMoNyXY",
@@ -86,6 +92,13 @@ func TestCustomBaseN_BaseNStringToNum(t *testing.T) {
 			baseN: 62,
 			str:   "1c4",
 			want:  4592,
+			want1: true,
+		},
+		{
+			name:  "normal_base62_max",
+			baseN: 62,
+			str:   "aZl8N0y58M7",
+			want:  9223372036854775807,
 			want1: true,
 		},
 		{
@@ -193,5 +206,62 @@ func TestWithSetChars(t *testing.T) {
 				t.Errorf("WithSetChars() = %v, want %v", got, tt.want)
 			}
 		})
+	}
+}
+
+func TestWithBytesCap(t *testing.T) {
+	tests := []struct {
+		name     string
+		capacity int
+		want     int
+	}{
+		{
+			name:     "normal",
+			capacity: 11,
+			want:     11,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := NewCustomBaseN(62, WithBytesCap(tt.capacity)).bytesCap; !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("WithBytesCap() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+// goos: windows
+// goarch: amd64
+// pkg: github.com/udugong/ukit/baseconv
+// cpu: Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz
+// BenchmarkCustomBaseN_NumToBaseNString/num_to_string-12           7766970   153.9 ns/op   24 B/op   2 allocs/op
+// BenchmarkCustomBaseN_NumToBaseNString/num_to_string_set_cap-12   8788993   136.2 ns/op   16 B/op   1 allocs/op
+func BenchmarkCustomBaseN_NumToBaseNString(b *testing.B) {
+	c := NewCustomBaseN(62)
+	const num = 9223372036854775807
+
+	b.Run("num_to_string", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			_ = c.NumToBaseNString(num)
+		}
+	})
+
+	c.bytesCap = 11
+	b.Run("num_to_string_set_cap", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			_ = c.NumToBaseNString(num)
+		}
+	})
+}
+
+// goos: windows
+// goarch: amd64
+// pkg: github.com/udugong/ukit/baseconv
+// cpu: Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz
+// BenchmarkCustomBaseN_BaseNStringToNum-12   24489595   49.16 ns/op   0 B/op   0 allocs/op
+func BenchmarkCustomBaseN_BaseNStringToNum(b *testing.B) {
+	c := NewCustomBaseN(62)
+	for i := 0; i < b.N; i++ {
+		_, _ = c.BaseNStringToNum("aZl8N0y58M7")
 	}
 }

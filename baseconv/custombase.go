@@ -3,15 +3,17 @@ package baseconv
 import (
 	"strings"
 
-	"github.com/udugong/ukit/reverse"
+	"github.com/udugong/ukit/slice"
+	"github.com/udugong/ukit/stringx"
 )
 
 const chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 // CustomBaseN 定义自定义的十进制与 N 进制的转换.
 type CustomBaseN struct {
-	n     int
-	chars string
+	n        int
+	chars    string
+	bytesCap int
 }
 
 // NewCustomBaseN 创建自定义进制转换.
@@ -47,6 +49,14 @@ func WithSetChars(chars string) Option {
 	})
 }
 
+// WithBytesCap 设置字节切片的初始化容量
+// 通过该选项可以减少切片扩容次数
+func WithBytesCap(capacity int) Option {
+	return optionFunc(func(n *CustomBaseN) {
+		n.bytesCap = capacity
+	})
+}
+
 // NumToBaseNString 十进制转换为 N 进制字符串.
 // 如果 num < 0 则返回 "".
 func (c CustomBaseN) NumToBaseNString(num int64) string {
@@ -57,7 +67,7 @@ func (c CustomBaseN) NumToBaseNString(num int64) string {
 		return string(c.chars[0])
 	}
 
-	var src []byte
+	src := make([]byte, 0, c.bytesCap)
 	base := int64(c.n)
 	for num > 0 {
 		remainder := num % base
@@ -66,7 +76,8 @@ func (c CustomBaseN) NumToBaseNString(num int64) string {
 	}
 
 	// 反转
-	return string(reverse.Slice(src))
+	slice.ReverseSelf(src)
+	return stringx.UnsafeToString(src)
 }
 
 // BaseNStringToNum N 进制字符串转十进制.
@@ -74,7 +85,7 @@ func (c CustomBaseN) NumToBaseNString(num int64) string {
 func (c CustomBaseN) BaseNStringToNum(str string) (int64, bool) {
 	base := int64(c.n)
 	chars := c.chars[:c.n]
-	src := []byte(str)
+	src := stringx.UnsafeToBytes(str)
 
 	var num int64
 	for _, b := range src {

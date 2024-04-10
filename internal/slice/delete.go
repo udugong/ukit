@@ -1,15 +1,12 @@
 package slice
 
-import (
-	"github.com/udugong/ukit/internal/errs"
-)
+import "github.com/udugong/ukit/internal/errs"
 
 func DeleteByIter[S ~[]E, E any](src S, index int) (S, error) {
 	length := len(src)
 	err := checkIndex(length, index)
 	if err != nil {
-		var zero S
-		return zero, err
+		return S(nil), err
 	}
 	for i, v := range src[index+1:] {
 		src[index+i] = v
@@ -21,19 +18,16 @@ func DeleteByAppend[S ~[]E, E any](src S, index int) (S, error) {
 	length := len(src)
 	err := checkIndex(length, index)
 	if err != nil {
-		var zero S
-		return zero, err
+		return S(nil), err
 	}
-	src = append(src[:index], src[index+1:]...)
-	return src[:length-1], nil
+	return append(src[:index], src[index+1:]...), nil
 }
 
 func DeleteByCopy[S ~[]E, E any](src S, index int) (S, error) {
 	length := len(src)
 	err := checkIndex(length, index)
 	if err != nil {
-		var zero S
-		return zero, err
+		return S(nil), err
 	}
 	copy(src[index:], src[index+1:])
 	return src[:length-1], nil

@@ -9,7 +9,7 @@ import (
 )
 
 func TestDelete(t *testing.T) {
-	// Delete 主要依赖于 internal/slice.DeleteByCopy 来保证正确性
+	// Delete 主要依赖于 internal/slice.DeleteByAppend 来保证正确性
 	type testCase[S ~[]E, E any] struct {
 		name    string
 		src     S

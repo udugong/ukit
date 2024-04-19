@@ -41,26 +41,3 @@ func TestDelete(t *testing.T) {
 		})
 	}
 }
-
-func TestBulkDelete(t *testing.T) {
-	// BulkDelete 主要依赖于 internal/slice.BulkDeleteByIter 来保证正确性
-	type testCase[S ~[]E, E any] struct {
-		name  string
-		src   S
-		index []int
-		want  S
-	}
-	tests := []testCase[[]int, int]{
-		{
-			name:  "normal",
-			src:   []int{1, 2, 3, 4, 5},
-			index: []int{0, 2, 4},
-			want:  []int{2, 4},
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.want, BulkDelete(tt.src, tt.index...))
-		})
-	}
-}

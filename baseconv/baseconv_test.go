@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestBaseN_NumToBaseString(t *testing.T) {
+func TestBaseN_NumToBaseNString(t *testing.T) {
 	b := NewBaseN(62)
 	tests := []struct {
 		name string
@@ -37,14 +37,14 @@ func TestBaseN_NumToBaseString(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := b.NumToBaseString(tt.num); got != tt.want {
-				t.Errorf("NumToBaseString() = %v, want %v", got, tt.want)
+			if got := b.NumToBaseNString(tt.num); got != tt.want {
+				t.Errorf("NumToBaseNString() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func TestBaseN_BaseStringToNum(t *testing.T) {
+func TestBaseN_BaseNStringToNum(t *testing.T) {
 	b := NewBaseN(62)
 	tests := []struct {
 		name  string
@@ -79,12 +79,12 @@ func TestBaseN_BaseStringToNum(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, got1 := b.BaseStringToNum(tt.str)
+			got, got1 := b.BaseNStringToNum(tt.str)
 			if got != tt.want {
-				t.Errorf("BaseStringToNum() got = %v, want %v", got, tt.want)
+				t.Errorf("BaseNStringToNum() got = %v, want %v", got, tt.want)
 			}
 			if got1 != tt.want1 {
-				t.Errorf("BaseStringToNum() got1 = %v, want %v", got1, tt.want1)
+				t.Errorf("BaseNStringToNum() got1 = %v, want %v", got1, tt.want1)
 			}
 		})
 	}

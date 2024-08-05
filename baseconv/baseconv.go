@@ -19,13 +19,13 @@ func NewBaseN(n int) *BaseN {
 	}
 }
 
-// NumToBaseString 十进制转换成 N 进制字符串
-func (b *BaseN) NumToBaseString(num int64) string {
+// NumToBaseNString 十进制转换成 N 进制字符串
+func (b *BaseN) NumToBaseNString(num int64) string {
 	return b.bInt.SetInt64(num).Text(b.n)
 }
 
-// BaseStringToNum N 进制字符串转换成十进制
-func (b *BaseN) BaseStringToNum(str string) (int64, bool) {
+// BaseNStringToNum N 进制字符串转换成十进制
+func (b *BaseN) BaseNStringToNum(str string) (int64, bool) {
 	tmp, ok := b.bInt.SetString(str, b.n)
 	if !ok {
 		return 0, ok

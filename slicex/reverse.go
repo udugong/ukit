@@ -1,4 +1,4 @@
-package slice
+package slicex
 
 // Reverse 创建一个新的 slice 存储反转后 src 的元素,并不会修改 src.
 func Reverse[S ~[]E, E any](src S) S {

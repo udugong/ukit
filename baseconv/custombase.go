@@ -3,7 +3,7 @@ package baseconv
 import (
 	"strings"
 
-	"github.com/udugong/ukit/slice"
+	"github.com/udugong/ukit/slicex"
 	"github.com/udugong/ukit/stringx"
 )
 
@@ -76,7 +76,7 @@ func (c CustomBaseN) NumToBaseNString(num int64) string {
 	}
 
 	// 反转
-	slice.ReverseSelf(src)
+	slicex.ReverseSelf(src)
 	return stringx.UnsafeToString(src)
 }
 

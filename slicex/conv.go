@@ -1,4 +1,4 @@
-package slice
+package slicex
 
 func ConvToAny[S ~[]E, E any](s S) []any {
 	data := make([]any, 0, len(s))

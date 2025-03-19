@@ -2,6 +2,10 @@ package set
 
 type MapSet[T comparable] map[T]struct{}
 
+func New[T comparable](cap int) MapSet[T] {
+	return make(MapSet[T], cap)
+}
+
 func (s MapSet[T]) Add(key T) {
 	s[key] = struct{}{}
 }

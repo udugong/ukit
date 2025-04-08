@@ -2,8 +2,8 @@ package slicex
 
 func ConvToAny[S ~[]E, E any](s S) []any {
 	data := make([]any, 0, len(s))
-	for _, v := range s {
-		data = append(data, v)
+	for k := range s {
+		data = append(data, s[k])
 	}
 	return data
 }
